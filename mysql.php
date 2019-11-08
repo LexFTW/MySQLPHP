@@ -53,8 +53,10 @@
   mysqli_select_db($connection, 'world');
 
   $cities = "SELECT * FROM city";
-  if(isset($_GET['search_city'])){
+  if(isset($_GET['search_city']) AND strlen($_GET['search_city']) == 3){
     $cities = "SELECT * FROM city WHERE CountryCode ='".$_GET['search_city']."'";
+  }else if(isset($_GET['search_city']) AND strlen($_GET['search_city']) != 3){
+    $cities = "SELECT * FROM city WHERE CountryCode = (SELECT Code FROM country WHERE Name = '".$_GET['search_city']."');";
   }
 
   $resultat_cities = mysqli_query($connection, $cities);
@@ -63,7 +65,7 @@
   $resultat_countries = mysqli_query($connection, $countries);
   if (!$resultat_cities) {
     $message  = 'Consulta invàlida: ' . mysqli_error() . "\n";
-    $message .= 'Consulta realitzada: ' . $consulta;
+    $message .= 'Consulta realitzada: ' . $cities;
     die($message);
   }
   ?>
