@@ -76,46 +76,37 @@
  			border: 1px solid black;
  			border-spacing: 0px;
  		}
+
+    td img{
+      display: block;
+      margin: 0 auto;
+    }
  	</style>
  </head>
 
  <body>
  	<h1>Exemple de lectura de dades a MySQL</h1>
   <form action="mysql.php" method="get">
-      <!-- <input type="text" name="search_city"> -->
       <input list="datalist_countries" name="search_city">
       <datalist id="datalist_countries">
         <?php
           while($registre = mysqli_fetch_assoc($resultat_countries)){
-            echo '<option value="'.$registre["Code"].'" label="'.$registre["Name"].'"></option>';
+            echo '<option style="background-image:url(./gif/esp.gif)" value="'.$registre["Code"].'" label="'.$registre["Name"].'"></option>';
           }
         ?>
       </datalist>
   </form>
 
- 	<!-- (3.1) aquí va la taula HTML que omplirem amb dades de la BBDD -->
  	<table>
- 	<!-- la capçalera de la taula l'hem de fer nosaltres -->
  	<thead><td colspan="4" align="center" bgcolor="cyan">Llistat de ciutats</td></thead>
-  	<!-- (3.6) tanquem la taula -->
     <?php
-      # (3.2) Bucle while
       while( $registre = mysqli_fetch_assoc($resultat_cities) )
       {
-        # els \t (tabulador) i els \n (salt de línia) son perquè el codi font quedi llegible
-
-        # (3.3) obrim fila de la taula HTML amb <tr>
         echo "\t<tr>\n";
-
-        # (3.4) cadascuna de les columnes ha d'anar precedida d'un <td>
-        #	després concatenar el contingut del camp del registre
-        #	i tancar amb un </td>
         echo "\t\t<td>".$registre["Name"]."</td>\n";
-        echo "\t\t<td>".$registre['CountryCode']."</td>\n";
+        echo "\t\t<td><img src='gif/".strtolower($registre['CountryCode']).".gif' alt='".$registre['CountryCode']."' title='".$registre['CountryCode']."'/></td>\n";
         echo "\t\t<td>".$registre["District"]."</td>\n";
         echo "\t\t<td>".$registre['Population']."</td>\n";
-
-        # (3.5) tanquem la fila
         echo "\t</tr>\n";
       }
    	?>
